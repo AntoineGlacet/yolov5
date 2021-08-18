@@ -133,11 +133,13 @@ class LoadImages:  # for inference
 
         images = [x for x in files if x.split('.')[-1].lower() in img_formats]
         videos = [x for x in files if x.split('.')[-1].lower() in vid_formats]
+        videos_nframes = [cv2.VideoCapture(videos[i]).get(cv2.CAP_PROP_FRAME_COUNT) for i in range(len(videos))]
         ni, nv = len(images), len(videos)
 
         self.img_size = img_size
         self.stride = stride
         self.files = images + videos
+        self.videos_nframes = videos_nframes
         self.nf = ni + nv  # number of files
         self.video_flag = [False] * ni + [True] * nv
         self.mode = 'image'
